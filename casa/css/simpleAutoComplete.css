@@ -1,0 +1,98 @@
+/* 
+	Document   : simpleAutoComplete
+	Created on : 26/06/2014, 13:27:12
+	Author     : Paulo Cesar
+*/
+
+div.autocomplete{
+	position:absolute;
+	width:248px;
+	background-color:#FEFEFE;
+	border:1px solid #7C7C7C;;
+	font-size:11px;
+	font-family: 'arial';
+}
+
+div.autocomplete ul{
+	padding-left:0;
+	margin:0;
+	list-style:none
+}
+div.autocomplete ul li{
+	padding:1px 10px;
+	cursor:pointer;
+	color: #303030;
+}
+div.autocomplete ul li.sel{
+	background-color:#B4D5FE;
+}
+
+div .suggestionList{
+	position:absolute;
+	/*width:50%;*/
+	max-width: 50%;
+	max-height: 30%;
+	background-color:#FEFEFE;
+	border:1px solid #7C7C7C;;
+	font-size:14px;
+	font-family: 'arial';
+	overflow: auto
+}
+
+div.suggestionList ul{
+	padding-left:0;
+	margin:0;
+	list-style:none
+}
+
+div.suggestionList ul li{
+	padding:1px 10px;
+	cursor:pointer;
+	color: #303030;
+}
+
+div.suggestionList ul li:hover{
+	background-color:#B4D5FE;
+}
+
+div.suggestionList ul li b{
+	color: #FF0000;
+}
+
+/*EMPRESA*/
+div .suggestionListEmp{
+	position:absolute;
+	/*width:50%;*/
+	max-width: 50%;
+	max-height: 30%;
+	background-color:#FEFEFE;
+	border:1px solid #7C7C7C;;
+	font-size:14px;
+	font-family: 'arial';
+	overflow: auto
+}
+
+div.suggestionListEmp ul{
+	padding-left:0;
+	margin:0;
+	list-style:none
+}
+
+div.suggestionListEmp ul li{
+	padding:1px 10px;
+	cursor:pointer;
+	color: #303030;
+}
+
+div.suggestionListEmp ul li:hover{
+	background-color:#B4D5FE;
+}
+
+div.suggestionListEmp ul li b{
+	color: #FF0000;
+}
+/*EMPRESA*/
+
+#uf{
+	width: 50px;
+}

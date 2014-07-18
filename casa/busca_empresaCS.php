@@ -1,0 +1,36 @@
+<html>
+	<head>
+		<title></title>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	</head>
+	<body>
+	<?php
+	header('Content-Type: text/html; charset=UTF-8');
+	$server = 'localhost';
+	$userDb = 'root';
+	$pwdSql = '1qaz2wsx';
+	//mssql_set_charset('iso-8859-1');
+	$SqlConection = mysql_connect ($server, $userDb, $pwdSql) or die ("Erro ao se conectar ao servidor");
+
+	//$conn = mysql_connect("servidor","usuario","senha")  or die ("Erro ao se conectar ao servidor");
+	//$bd	  = mysql_select_db("banco") or die ("Erro ao se conectar ao banco");
+	$bd = mysql_select_db('sis_proposta', $SqlConection) or die ("Erro ao se conectar ao banco");
+	//agora realizamos nossa consulta no banco com base no que é digitado no nosso input
+
+			if(isset($_POST['queryString']))
+			{
+					$queryString = $_POST['queryString'];
+					if(strlen($queryString) >0) {
+						//$query = mysql_query("SELECT nome FROM paises WHERE nome LIKE '$queryString%' LIMIT 10") or die("Erro na consulta");
+						$query = mysql_query("SELECT IdEmpresa, NomeEmpresa, Estado FROM tbl_empresa WHERE NomeEmpresa like '%" . $queryString . "%' ORDER BY NomeEmpresa ASC;");
+						echo "<ul>";
+						while ($result = mysql_fetch_assoc($query)) {
+							echo '<li onClick="fillEmp(\''.$result['NomeEmpresa']. '\', \''.$result['IdEmpresa']. '\', \''.$result['Estado'].'\');">'.$result['NomeEmpresa'].'</li>';
+						}
+						echo "</ul>";
+					}
+			}
+	mysql_close();
+			?>
+	</body>
+</html>

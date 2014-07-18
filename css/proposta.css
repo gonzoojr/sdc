@@ -1,0 +1,85 @@
+			body{
+				font-family: "Courier New";
+			}
+			table {
+				font-size: 14px;
+			}
+			.borda-arr {
+				width: 100%;			
+				text-align:center;
+				/*border-collapse:collapse;*/
+				border: 0px solid #000;
+				border-spacing: 2px;
+    			border-collapse: separate;
+			}
+			.borda-arr th{
+				background:#c9e3f6;
+			}
+			.prop_header{
+				height: 47px;
+				width: 100%;
+	
+				position: relative;
+				z-index: -12;
+				background: url("../img/bg_head.png");
+				background-repeat:repeat-x;
+			}
+			.meia{
+				width:50%;
+			}
+			.meia td{
+				vertical-align:text-top;
+				text-align: left;
+			}
+			.comum td{
+				vertical-align:text-top;
+				text-align: left;
+			}
+			.comum th{
+				width: 150px;
+				vertical-align: top;
+			}
+			td{
+				border: 1px solid #dadada;
+				
+				-moz-border-radius:0px 7px 0px 7px;
+				-webkit-border-radius:0px 7px 0px 7px;
+				border-radius:0px 7px 0px 7px;
+			}
+			
+			th{
+				border: 0px;
+				
+				-moz-border-radius:0px 7px 0px 7px;
+				-webkit-border-radius:0px 7px 0px 7px;
+				border-radius:0px 7px 0px 7px;
+			}
+			
+			.meia .direita{
+				text-align: right;
+				width:50%;
+			}	
+			.bg-left{
+				position: absolute;
+				z-index: -10;
+				left: 0;
+			}
+			.bg-right{
+				position: absolute;
+				z-index: -10;
+				right: 0;
+			}
+			.logo{
+				position: absolute;
+				vertical-align: middle;
+				z-index: -9;
+			}
+			#addEmpresa{
+				height: 50px;
+				display: block;
+				margin: auto;
+			}
+			.erro{
+				color: #FF0000;
+				font-weight: bold;
+			}
