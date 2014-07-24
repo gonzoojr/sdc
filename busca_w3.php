@@ -1,9 +1,4 @@
-<html>
-	<head>
-		<title></title>
-		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
-	</head>
-	<body>
+
 			<?php
 			header('Content-Type: text/html; charset=iso-8859-1');
 			$serverSql = '192.168.10.93';
@@ -25,11 +20,14 @@
 						$query = mssql_query("SELECT prd_cod,prd_desc,preco_Usuario,preco_Integrador,class_fiscal_prod,categ_prod,prd_cor,prd_tamanho,oo_moeda_de_preco FROM produto WHERE prd_desc like '%" . $queryString . "%';");
 						echo "<ul>";
 						while ($result = mssql_fetch_assoc($query)) {
-							echo '<li onClick="fill(\''.$result['prd_desc']. ' (' . $result['preco_Usuario'] . ' - ' . $result['preco_Integrador'] . ')\',\''.$result['prd_desc'].'\',\''.number_format($result['preco_Usuario'], 2, ',', '.').'\',\''.number_format($result['preco_Integrador'], 2, ',', '.').'\');">'.$result['prd_desc']. ' (<b>U: R$' . number_format($result['preco_Usuario'], 2, ',', '.') . ' - I: R$' . number_format($result['preco_Integrador'], 2, ',', '.') .'</b>) - '.$result['prd_cod'].'</li>';
+							echo '<li onClick="
+							fill(\''.$result['prd_desc']. ' (' . $result['preco_Usuario'] . ' - ' . $result['preco_Integrador'] . ')\'
+							,\''.$result['prd_desc'].'\'
+							,\''.number_format($result['preco_Usuario'], 2, ',', '.').'\'
+							,\''.number_format($result['preco_Integrador'], 2, ',', '.').'\'
+							,\''.$result['class_fiscal_prod'].'\');">'.$result['prd_desc']. ' (<b>U: R$' . number_format($result['preco_Usuario'], 2, ',', '.') . ' - I: R$' . number_format($result['preco_Integrador'], 2, ',', '.') .'</b>) - '.$result['prd_cod'].'</li>';
 						}
 						echo "</ul>";
 					}
 			}
 			?>
-	</body>
-</html>

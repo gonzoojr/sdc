@@ -1,5 +1,6 @@
 <?
 // Inclui o arquivo com o sistema de segurança
+header('Content-Type: text/html; charset=iso-8859-1');
 include("seguranca.php");
 
 // Verifica se um formulário foi enviado

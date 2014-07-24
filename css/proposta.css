@@ -79,7 +79,22 @@
 				display: block;
 				margin: auto;
 			}
+			.editEmpresa{
+				height: 15px;
+				margin: auto;
+				display: inline;
+			}
 			.erro{
 				color: #FF0000;
 				font-weight: bold;
+			}
+			
+			.tbl_clientes td{
+				border: 0px;
+			}
+			#user{
+				position: absolute;
+				top: 25px;
+				right: 0px;
+				z-index: 100;
 			}

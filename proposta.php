@@ -1,7 +1,7 @@
 <html>
 	<head>
-		<meta charset="UTF-8">
 		<title>Visualização de Proposta</title>
+		<meta charset="ISO-8859-1">
 		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
 		<script type="text/javascript" src="js/simpleAutoComplete.js"></script>
 		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
@@ -25,16 +25,6 @@
 		-- Embedded Core 2 Duo E-7400 - 2.8GHz, 3MB de cache com 2 núcleos
 		-- Fonte Industrial de alto MTBF 80 plus Bronze com entrada 110~220VCA
 		-- Motherboard Industrial Modelo WSB-9454
-		Suporte a Windows 2000
-		Chipset Intel 945G +ICH7
-		(x2) Portas Ethernet 10/100/1000Mbps on board
-		Expansão de memória até 4GB
-		WDT
-		(x4) Portas SATA II 3GB/s
-		(x7) Portas USB 2.0 (1x faceplate, 8x onboard pin headers)
-		(x1) Porta LPT
-		(x2) Portas seriais RS-232
-		(x1) Saída de Vídeo VGA
 		-- Porta PS2 para teclado e mouse
 		-- 4GB de memória DDR2-800 em dois módulos de 2GB dual channel
 		-- Hard Disk Drive SATA III 7200RPM com 500GB
@@ -53,13 +43,17 @@
 			######################################
 			$insert = "
 				INSERT INTO  `sis_proposta`.`tbl_proposta` (
-				`idProposta`, `idGerente`
+				`idProposta`, `idGerente`, `dataCadastro`
 				)
-				VALUES ('". $id_proposta ."', '" . $_SESSION['usuarioID'] . "'
+				VALUES ('". $id_proposta ."', '" . $_SESSION['usuarioID'] . "', '". date("Y-m-d H:i:s") ."'
 				);
 			";
 			$query = consultas("mysql", $insert);
 			######################################
+			$query_id_geral = "SELECT idGeral, idProposta FROM `tbl_proposta` order by idGeral desc";
+			$query = consultas("mysql", $query_id_geral);
+			$result = mysql_fetch_assoc($query);
+			$idGeral = $result['idGeral'];
 			//echo $query;
 			mysql_close();
 		}else{
@@ -105,7 +99,13 @@
 		</div>
 		<table class="borda-arr">
 			<tr class="meia">
-				<th>Proposta Comercial: <? if($_GET['acao']=="cad") echo $id_proposta;?></th><th>Versão: <b>b</b> Atualizado em: <?=$dataAtuProposta?></th>
+				<th>
+					Proposta Comercial: <?php if($_GET['acao']=="cad") { echo $id_proposta . "<input type='hidden' value='".$id_proposta."' id='idProposta'> <input type='hidden' value='".$idGeral."' id='idGeral'> <input type='hidden' value='' id='idUF'>"; } ?>
+					<span id="editEmpresa" style="position: absolute;"></span>
+				</th>
+				<th>
+					Versão: <b>b</b> Atualizado em: <?=$dataAtuProposta?>
+				</th>
 			</tr>
 			<tr class="meia">
 				<td id="empresa">
@@ -130,10 +130,11 @@
 		</table>
 		Presado(a): Beltrano da Silva<br>
 		Segue abaixo escopo de fornecimento e condições comerciais para o fornecimento de produtos do seu interesse.<br>
-		<table class="borda-arr">
+		<table id="listaItens" class="borda-arr">
 			<tr>
-				<th>Item <img src="img/add.png" height="15px" id="add_item"></th><th>Descrição</th><th>NCM</th><th>Valor Unit</th><th>ICMS %</th><th>IPI %</th><th>ISS %</th><th>Subst. Trib.%</th><th>Qtd</th><th>&nbsp;</th>
+				<th>Item <img src="img/add.png" height="15px" onclick='altContDialog("formProd","#subitens");janela("Buscar Produto");' id="add_item"></th><th>Descrição</th><th>NCM</th><th>Valor Unit</th><th>ICMS %</th><th>IPI %</th><th>ISS %</th><th>Subst. Trib.%</th><th>Qtd</th><th>&nbsp;</th>
 			</tr>
+		
 			<tr class="comum">
 				<td>1</td><td><?=$desc_cont;?></td><td>8471.50.10</td><td>3.299,99</td><td>0</td><td>0</td><td>0</td><td>0</td><td>80</td><td>R$ 263.999,12</td>
 			</tr>

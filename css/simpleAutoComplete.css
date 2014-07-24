@@ -30,7 +30,7 @@ div.autocomplete ul li.sel{
 div .suggestionList{
 	position:absolute;
 	/*width:50%;*/
-	max-width: 50%;
+	max-width: 80%;
 	max-height: 50%;
 	background-color:#FEFEFE;
 	border:1px solid #7C7C7C;;
