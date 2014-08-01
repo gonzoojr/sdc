@@ -98,3 +98,7 @@
 				right: 0px;
 				z-index: 100;
 			}
+			
+			.total td{
+				border: 0 solid #000;
+			}

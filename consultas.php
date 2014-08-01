@@ -2,6 +2,7 @@
 /*ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(-1);*/
+header('Content-Type: text/html; charset=UTF-8');
 function consultas($tipoConn, $sql){
 	if($tipoConn=="mssql"){
 		
@@ -23,7 +24,7 @@ function consultas($tipoConn, $sql){
 		
 		
 		if(strlen($sql) >0) {
-			$query = mssql_query($sql);
+			$query = mssql_query($sql) or die("Erro em consulta MsSql Consulte o administrador!!!");
 			return $query;
 		}else{
 			return false;
@@ -48,7 +49,7 @@ function consultas($tipoConn, $sql){
 		}
 		
 		if(strlen($sql) >0) {
-			$query = mysql_query($sql) or die("<span class='erro'>Erro " . mysql_errno() . "informe o adminitrador!</span><a href='proposta.php'>Voltar</a>");
+			$query = mysql_query($sql) or die("<span class='erro'>Erro " . mysql_errno() . " (".$sql.")  informe o adminitrador!</span><a href='proposta.php'>Voltar</a>");
 			return $query;
 		}else{
 			return false;
@@ -80,7 +81,8 @@ if(isset($_GET['campos'])){
 		$getCampos = str_replace(":", "=", $_GET['campos']);
 		$getWhere = str_replace(":", "=", $_GET['where']);
 		if(strlen($campos) > 0 && strlen($tabela) > 0 && strlen($where) > 0) {
-			$query = mysql_query("UPDATE " . $tabela . " SET " . $getCampos . " " . $getWhere) or die("<span class='erro'>Erro " . mysql_errno() . "informe o adminitrador!</span><a href='proposta.php'>Voltar</a>");
+			$query = mysql_query("UPDATE " . $tabela . " SET " . $getCampos . " " . $getWhere) or die("Erro: " . mysql_errno() . "informe o adminitrador! UPDATE " . $tabela . " SET " . $getCampos . " " . $getWhere);
+			//return $query . "UPDATE " . $tabela . " SET " . $getCampos . " " . $getWhere;
 			return $query;
 		}else{
 			return false;
@@ -122,14 +124,17 @@ if(strlen($_GET['ncm'])>0 && strlen($_GET['uf'])> 0){
 
 if(isset($_GET['item']) && isset($_POST['idGeral'])){
 	$query_qts_itens = "SELECT count(idItem) as idItem, idGeral, posItem FROM `tbl_item_proposta` WHERE idGeral=".$_POST['idGeral'];
-	$query = consultas("mysql", $query_ultimo_reg);
+	$query = consultas("mysql", $query_qts_itens);
+	
 	$result = mysql_fetch_assoc($query);
-	$num_itens = intval($result['idItem']);
-	if($num_itens==0){
-		$num_itens ++;
-		$queryInsItem = "INSERT INTO  `sis_proposta`.`tbl_item_proposta` (
+	$num_itens = $result['idItem'];
+	//echo $num_itens . "############ "; 
+	if(isset($num_itens)){
+		$num_itens = $num_itens + 1;
+		$queryInsItem = utf8_decode("INSERT INTO  `sis_proposta`.`tbl_item_proposta` (
 						`idItem` ,
 						`idGeral` ,
+						`prd_cod` ,
 						`ncm` ,
 						`vlrUnit` ,
 						`icms` ,
@@ -142,7 +147,8 @@ if(isset($_GET['item']) && isset($_POST['idGeral'])){
 						)
 						VALUES (
 						NULL ,  
-						'".$_POST['idGeral']."',  
+						'".$_POST['idGeral']."',
+						'".$_POST['prdCod']."',    
 						'".$_POST['mostraNcm']."',  
 						'".$_POST['vlrUnit']."',  
 						'".$_POST['icms']."',  
@@ -152,10 +158,28 @@ if(isset($_GET['item']) && isset($_POST['idGeral'])){
 						'".$_POST['qtd']."',  
 						'".$_POST['descCliente']."',  
 						'".$num_itens."'
-						);";
+						);");
 		$queryItem = consultas("mysql", $queryInsItem);
+		//echo $queryInsItem;
 	}
+	//echo $queryInsItem;
 	echo $num_itens;
 	return $num_itens; 
+}
+if(isset($_GET['estoque']) && isset($_POST['prd_cod'])){
+		
+	$queryEstoque = "SELECT count(prd_cod)
+	FROM estoque_deposito_produto_serie
+	WHERE status = 'EFETUADO_NUM_SERIE' 
+	AND prd_cod = '".$_POST['prd_cod']."' 
+	AND (dep_cod = 4 OR dep_cod = 18)";
+
+	$query = consultas("mssql", $queryEstoque);
+	
+	$result = mssql_fetch_array($query);
+	$num_estoque = $result[0];
+	
+	echo $num_estoque . " " . $_POST['prd_cod'];
+	return $num_estoque; 
 }
 ?>

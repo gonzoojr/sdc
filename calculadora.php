@@ -2,78 +2,71 @@
 ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
 error_reporting(-1);
-if(strlen($_POST['vlr_unidade']) > 0){
-
+if(isset($_POST['vlr_unidade']) && 
+		isset($_POST['percent_icms']) && 
+		isset($_POST['percent_ipi'])){
 	$qtd = $_POST['qtd'];
-
-	$vlr_unidade = $_POST['vlr_unidade'];
-
+	$vlr_unidade = str_replace(".", "", $_POST['vlr_unidade']);
+	$vlr_unidade = str_replace(",", ".", $vlr_unidade);
 	$vlr_total_prod = $qtd * $vlr_unidade;
 
+	//echo "formula basica<br><br>";
 	
-
-	$percent_icms = number_format($_POST['percent_icms'], 4,'.','') / 100;
-
+	$percent_icms = (100 - $_POST['percent_icms']) / 100;
 	$percent_ipi = number_format($_POST['percent_ipi'], 4,'.','') / 100;
-
-	$percent_st = number_format($_POST['percent_st'], 4,'.','') / 100;
-
-	$vlr_ipi = $vlr_total_prod * $percent_ipi;
-
-	$vlr_ipi = $vlr_ipi;
-
-	$prod_c_ipi = $vlr_total_prod + $vlr_ipi;
-
-	$vlr_icms = $vlr_total_prod * $percent_icms;
-
-	$base_icms_st = $prod_c_ipi * $percent_st + $prod_c_ipi;
-
-	$base_icms_st = $base_icms_st;
-
-	$vlr_icms_st = $base_icms_st * $percent_icms - $vlr_icms;
-
-	$vlr_icms_st = $vlr_icms_st;
-
-	$vlr_nota = $prod_c_ipi + $vlr_icms_st;
-
-	$vlr_nota = number_format($vlr_nota, 2,',','.');
-	if(isset($_GET['teste'])){
-
-	echo "%ICMS: " . $percent_icms . "<br>";
-
-	echo "%IPI: " . $percent_ipi . "<br>";
-
-	echo "%ST: " . $percent_st . "<br>";
-
-	echo "Vlr IPI (total * %ipi): " . $vlr_ipi . "<br>";
-
-	echo "Prod c IPI (total + vlr ipi): " . $prod_c_ipi . "<br>";
-
-	echo "Vlr ICMS(total * %icms): " . $vlr_icms . "<br>";
-
-	echo "Base Icms st( prod c ipi * %st + prod c ipi): " . $base_icms_st . "<br>";
-
-	echo "ICMS ST: " . $vlr_icms_st . "<br>";
-
-	echo "Valor Uni: " . $vlr_unidade . "<br>";
-
-	echo "Valor Total Produto(qtd * vlr unidade): " . $vlr_total_prod . "<br>";
-
-	echo "Valor Nota (prod c ipi + vlr icms st): " . $vlr_nota . "<br>";
-	}
 	
-	echo $percent_icms . ";" . $percent_ipi . ";" . $percent_st . ";" .$vlr_nota;//resultado que será enviado!!!!!!!
-
+	if(isset($_POST['tipoUsuario']) && $_POST['tipoUsuario']=="final"){
+		$percent_icms = $_POST['percent_icms'] / 100;
+		$icms = number_format(($vlr_total_prod /(1-($percent_icms*(1+$percent_ipi)))* (1+$percent_ipi) * $percent_icms), 2,'.','');
+		//echo "ICMS: " . $icms . " = ($vlr_total_prod /(1-($percent_icms*(1+$percent_ipi)))* (1+$percent_ipi) * $percent_icms)<br>";
+	}else{
+		$icms = number_format(($vlr_total_prod / $percent_icms) - $vlr_total_prod, 2,'.','');
+		//echo "ICMS: " . $icms . " = (".$vlr_total_prod." / ".$percent_icms.") - ".$vlr_total_prod."<br>";
+	}	
+	
+	$vlr_unidade_c_icms = number_format($vlr_total_prod + $icms, 2,'.','');
+	//echo "Produto c/ ICMS: " . $vlr_unidade_c_icms . "<br>";
+	
+	$ipi = number_format($vlr_unidade_c_icms * $percent_ipi, 2,'.','');
+	//echo "IPI: " . $ipi . "<br>";
+	
+	$total_item =  $vlr_unidade_c_icms + $ipi;
+	//echo "TOTAL basico: " . $total_item . "<br>";
+	
+	#CÁLCULO COM ST	
+	if(strlen($_POST['percent_st'])>0 && (isset($_POST['calc_st']) && $_POST['calc_st']=="sim")){
+		$percent_st = number_format($_POST['percent_st'], 4,'.','') / 100;
+		
+		$percent_icms_st = number_format($_POST['percent_icms_st'] / 100, 2,'.','');
+		
+		$base_icms_st = number_format(($total_item * $percent_st) + $total_item, 2,'.','');
+		//echo "Base ICMS c ST: " . $base_icms_st . "<br>";
+		
+		$icms_st = number_format(($base_icms_st * $percent_icms_st) - $icms, 2,'.',''); 
+		//echo "ICMS c ST: " . $icms_st . "<br>";
+		
+		$total_item_c_icms_st =  number_format($total_item + $icms_st, 2,'.','');
+		//echo "Total com ST: " . $total_item_c_icms_st;
+		
+		$basica = $vlr_total_prod + $icms + $ipi;
+	}
+	######ORIGINAL##########
+	if(isset($total_item_c_icms_st)){
+		$vlr_nota = $total_item_c_icms_st;
+	}else{
+		$vlr_nota = $total_item;
+	}
+	if(!isset($icms_st)){
+		$icms_st = 0;
+	}
+	echo $icms . ";" . $ipi . ";" . $icms_st . ";" .$vlr_nota . ";" . 0;//resultado que será enviado!!!!!!!
 }else{
-
-	echo "Preencha para calcular";
-
+	echo "Ocorreram erros ao Calcular, consulte o administrador";
 }
 
 if(isset($_GET['teste'])){
 
 ?>
-
 <html>
 
 	<head>

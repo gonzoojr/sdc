@@ -14,7 +14,7 @@
 
 			if(isset($_POST['queryString']))
 			{
-					$queryString = $_POST['queryString'];
+					$queryString = utf8_decode($_POST['queryString']);
 					if(strlen($queryString) >0) {
 						//$query = mysql_query("SELECT nome FROM paises WHERE nome LIKE '$queryString%' LIMIT 10") or die("Erro na consulta");
 						$query = mysql_query("SELECT IdEmpresa, NomeEmpresa, Estado FROM tbl_empresa WHERE NomeEmpresa like '%" . $queryString . "%' ORDER BY NomeEmpresa ASC;");

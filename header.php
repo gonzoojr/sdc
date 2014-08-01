@@ -2,7 +2,7 @@
 			<img src="img/logo.png" class="logo"><img src="img/bg_top_left.png" class="bg-left"><img src="img/bg_top_right.png" class="bg-right">
 			<div id="user" style="position: absolute; top: 25px; right: 0px; z-index: 100;">
 				<?
-				header('Content-Type: text/html; charset=iso-8859-1');
+				header('Content-Type: text/html; charset=UTF-8');
 				if($_GET['login']=="sair"){
 					expulsaVisitante();
 				}
