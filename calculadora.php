@@ -1,13 +1,18 @@
 <?
-ini_set('display_errors',1);
+/*ini_set('display_errors',1);
 ini_set('display_startup_errors',1);
-error_reporting(-1);
-if(isset($_POST['vlr_unidade']) && 
+error_reporting(-1);*/
+if(isset($_POST['valor']) && 
 		isset($_POST['percent_icms']) && 
 		isset($_POST['percent_ipi'])){
 	$qtd = $_POST['qtd'];
-	$vlr_unidade = str_replace(".", "", $_POST['vlr_unidade']);
+	$vlr_unidade = str_replace(".", "", $_POST['valor']);
 	$vlr_unidade = str_replace(",", ".", $vlr_unidade);
+	
+	$dolar = $_POST['dolar'];
+	
+	$vlr_unidade = $vlr_unidade * $dolar; 
+
 	$vlr_total_prod = $qtd * $vlr_unidade;
 
 	//echo "formula basica<br><br>";
@@ -105,7 +110,11 @@ if(isset($_GET['teste'])){
 
 			<label>Valor Unitário</label>
 
-			<input type="text" name="vlr_unidade" id="vlr_unidade">
+			<input type="text" name="valor" id="valor">
+			<input type="checkbox" name="calc_st" id="calc_st" value="sim">
+			
+			dola
+			<input type="text" name="dolar" id="dolar">
 
 			<label>Valor Total Produto</label>
 

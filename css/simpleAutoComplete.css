@@ -59,6 +59,10 @@ div.suggestionList ul li b{
 	color: #FF0000;
 }
 
+div.suggestionList ul li b.verde{
+	color: #006600;
+}
+
 /*EMPRESA*/
 div .suggestionListEmp{
 	position:absolute;

@@ -1,8 +1,13 @@
 			body{
-				font-family: "Courier New";
+				font-family: "Times New Roman";
 			}
+
 			table {
 				font-size: 14px;
+			}
+			
+			table.bodyPrint{
+				font-size: 12px;
 			}
 			.borda-arr {
 				width: 100%;			
@@ -25,7 +30,7 @@
 				background-repeat:repeat-x;
 			}
 			.meia{
-				width:50%;
+				width:100%;
 			}
 			.meia td{
 				vertical-align:text-top;
@@ -101,4 +106,16 @@
 			
 			.total td{
 				border: 0 solid #000;
+			}
+			
+			.print th{
+				text-align: center;
+			}
+			
+			.print td{
+				text-align: center;
+			}
+			
+			.print td.descricao{
+				text-align: left;
 			}

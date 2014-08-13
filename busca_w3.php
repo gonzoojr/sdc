@@ -64,10 +64,10 @@
 							,\''.$estoque.' '.$hora_estoque.'\'
 							,\''.number_format($result['preco_Usuario'], 2, ',', '.').'\'
 							,\''.number_format($result['preco_Integrador'], 2, ',', '.').'\'
-							,\''.$result['class_fiscal_prod'].'\');">'.$result['prd_desc']. '
+							,\''.$result['class_fiscal_prod'].'\');">- <b class="verde">'.$result['prd_cod'].'</b>:'.$result['prd_desc']. '
 							 (<b>U: R$' . number_format($result['preco_Usuario'], 2, ',', '.') . '
 							  - I: R$' . number_format($result['preco_Integrador'], 2, ',', '.') .'
-							  </b>) - '.$result['prd_cod'].'</li>';
+							  </b>)</li>';
 						}
 						echo "</ul>";
 					}
